@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class IntroButton extends StatelessWidget {
   final Widget child;
@@ -20,7 +21,20 @@ class IntroButton extends StatelessWidget {
       child: Semantics(
         label: semanticLabel,
         button: true,
-        child: TextButton(
+        child: 
+        Focus(
+          onKey: (node, event) {
+          if (event is RawKeyDownEvent) {
+            if (event.logicalKey.keyLabel == 'Select' || event.logicalKey.keyLabel == 'Game Button A' || event.logicalKey == LogicalKeyboardKey.select) {
+              onPressed!();
+              return KeyEventResult.handled;
+            }
+            return KeyEventResult.ignored;
+          }
+          return KeyEventResult.ignored;
+        },
+          child: 
+        TextButton(
           onPressed: onPressed,
           child: child,
           style: TextButton.styleFrom(
@@ -29,7 +43,7 @@ class IntroButton extends StatelessWidget {
             ),
           ).merge(style),
         ),
-      ),
+      )),
     );
   }
 }
